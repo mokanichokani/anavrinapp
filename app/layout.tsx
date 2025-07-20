@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AnimatedNavbar from "@/components/Navbar";
+import { LenisProvider } from "@/components/LenisProvider";
 
 export const metadata: Metadata = {
   title: "Anavrin Stays",
@@ -13,15 +14,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="lenis">
       <body
-        className="antialiased helvetica-font"
+        className="antialiased helvetica-font lenis"
         style={{
           fontFamily: 'HelveticaNeueRoman, "Helvetica Neue", Helvetica, Arial, sans-serif'
         }}
       >
-        <AnimatedNavbar />
-        {children}
+        <LenisProvider>
+          <AnimatedNavbar />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

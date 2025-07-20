@@ -9,7 +9,7 @@ import { FAQSection } from "@/components/FAQSection";
 import { TravelPackages } from "@/components/TravelPackages";
 import { NewsletterSection } from "@/components/NewsletterSection";
 import { Footer } from "@/components/Footer";
-import { PremiumLoader } from "@/components/PremiumLoader";
+import { LoaderTwo } from "@/components/ui/loader";
 import { useLenis } from "@/hooks/useLenis";
 import "../homie.css";
 // Number Counter Component
@@ -72,7 +72,7 @@ function NumberTicker({ value, duration = 2000 }: { value: number; duration?: nu
 
 export default function Home() {
   const [currentVideo, setCurrentVideo] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { scrollTo } = useLenis();
   const [formData, setFormData] = useState({
     destination: '',
@@ -83,6 +83,15 @@ export default function Home() {
     rooms: '',
     roomtype: ''
   });
+
+  // Check if this is the initial page load (not navigation)
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem('hasVisitedHome');
+    if (!hasVisited) {
+      setIsLoading(true);
+      sessionStorage.setItem('hasVisitedHome', 'true');
+    }
+  }, []);
   
   const videos = ["/video1.mov", "/video2.mp4"];
   const destinations = ["Lonavala, India", "Karjat, India"];
@@ -97,6 +106,15 @@ export default function Home() {
     }, 10000); // Switch videos every 10 seconds
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Loading timer
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // Show loader for 3 seconds
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Set minimum date to today
@@ -150,9 +168,11 @@ export default function Home() {
 
   return (
     <div className="relative w-full">
-      {/* Premium Loader */}
+      {/* Loader */}
       {isLoading && (
-        <PremiumLoader onLoadingComplete={() => setIsLoading(false)} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+          <LoaderTwo />
+        </div>
       )}
 
       {/* Main Content - Hidden while loading */}
@@ -203,12 +223,12 @@ export default function Home() {
         <div className="relative z-10 h-full p-5">
           {/* Main Heading - Centered */}
           <div className="text-center pt-20 pb-12">
-            <TextAnimate animation="slideUp" by="word" className="text-4xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg" style={{fontFamily: 'HelveticaNeueMedium, "Helvetica Neue", Helvetica, Arial, sans-serif'}}>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg" style={{fontFamily: 'HelveticaNeueMedium, "Helvetica Neue", Helvetica, Arial, sans-serif'}}>
               Begin your dream journey with our
-            </TextAnimate>
-            <TextAnimate animation="slideUp" by="word" className="text-4xl md:text-6xl font-bold mb-8 text-white drop-shadow-lg" style={{fontFamily: 'HelveticaNeueMedium, "Helvetica Neue", Helvetica, Arial, sans-serif'}}>
+            </h1>
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 text-white drop-shadow-lg" style={{fontFamily: 'HelveticaNeueMedium, "Helvetica Neue", Helvetica, Arial, sans-serif'}}>
               expert guidance and support
-            </TextAnimate>
+            </h1>
           </div>
 
           {/* Booking Form Container - Centered */}
@@ -394,7 +414,7 @@ export default function Home() {
                         
                         {/* Villa 1 */}
                         <div className="villa-card">
-                            <div className="villa-image-container">
+                              <div className="villa-image-container">
                                 <img src="/villa1.jpg" alt="Luxury Mountain Villa" className="villa-image" />
                                 <div className="image-overlay"></div>
                                 <div className="villa-favorite">

@@ -10,6 +10,7 @@ interface PremiumLoaderProps {
 export function PremiumLoader({ onLoadingComplete }: PremiumLoaderProps) {
   const [progress, setProgress] = useState(0);
   const [fadeOut, setFadeOut] = useState(false);
+  const [startTime] = useState(Date.now());
 
   useEffect(() => {
     // Simulate loading progress
@@ -17,6 +18,12 @@ export function PremiumLoader({ onLoadingComplete }: PremiumLoaderProps) {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
+          
+          // Ensure minimum 2 seconds display time
+          const elapsed = Date.now() - startTime;
+          const minDisplayTime = 2000;
+          const remainingTime = Math.max(0, minDisplayTime - elapsed);
+          
           // Start fade out animation
           setTimeout(() => {
             setFadeOut(true);
@@ -24,17 +31,17 @@ export function PremiumLoader({ onLoadingComplete }: PremiumLoaderProps) {
             setTimeout(() => {
               onLoadingComplete();
             }, 800);
-          }, 500);
+          }, remainingTime + 500);
           return 100;
         }
         // Realistic loading progression with varying speeds
-        const increment = Math.random() * 15 + 5;
+        const increment = Math.random() * 12 + 3;
         return Math.min(prev + increment, 100);
       });
-    }, 150);
+    }, 200);
 
     return () => clearInterval(interval);
-  }, [onLoadingComplete]);
+  }, [onLoadingComplete, startTime]);
 
   return (
     <div 

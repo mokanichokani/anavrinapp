@@ -555,8 +555,7 @@ export default function Home() {
     {/* Newsletter Section */}
     <NewsletterSection />
 
-    {/* Footer */}
-    <Footer />
+ 
       </div>
     </div>
   );

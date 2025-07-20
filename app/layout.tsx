@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AnimatedNavbar from "@/components/Navbar";
 import { LenisProvider } from "@/components/LenisProvider";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Anavrin Stays",
@@ -24,6 +25,7 @@ export default function RootLayout({
         <LenisProvider>
           <AnimatedNavbar />
           {children}
+          <Footer />
         </LenisProvider>
       </body>
     </html>

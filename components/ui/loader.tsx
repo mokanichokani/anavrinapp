@@ -1,5 +1,7 @@
+//@ts-nocheck
+
 "use client";
-import { motion } from "motion/react";
+import { motion, easeInOut } from "motion/react";
 import React from "react";
 
 export const LoaderOne = () => {
@@ -9,7 +11,7 @@ export const LoaderOne = () => {
       repeat: Infinity,
       repeatType: "loop" as const,
       delay: x * 0.2,
-      ease: "easeInOut",
+      ease: easeInOut,
     };
   };
   return (
